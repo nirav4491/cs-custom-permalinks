@@ -59,45 +59,31 @@ class Cs_Custom_Permalinks_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Cs_Custom_Permalinks_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Cs_Custom_Permalinks_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
+	public function cscp_enqueue_styles_scripts() {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cs-custom-permalinks-public.css', array(), $this->version, 'all' );
-
-	}
-
-	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Cs_Custom_Permalinks_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Cs_Custom_Permalinks_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cs-custom-permalinks-public.js', array( 'jquery' ), $this->version, false );
-
 	}
-
+	/**
+	 * Function to define all init functions.
+	 *
+	 * @since 1.0.0
+	 */
+	public function cscp_init_functions() {
+		cscp_custom_song_post_type();
+		global $wp_rewrite;
+		$wp_rewrite->add_permastruct('song', '/%customname%/', false);
+		$wp_rewrite->flush_rules();
+	}
+	/**
+	 * Function to return change permalink structure.
+	 *
+	 * @since 1.0.0
+	 */
+	public function cscp_change_structure_permalink( $permalink, $post ) {
+		if ( 'song' === $post->post_type ) {
+			$permalink = str_replace( '%customname%/', 'niravmehta/'. $post->post_name, $permalink );
+		}
+		return $permalink;
+		
+	}
 }

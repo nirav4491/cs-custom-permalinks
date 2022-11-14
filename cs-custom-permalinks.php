@@ -44,6 +44,7 @@ define( 'CS_CUSTOM_PERMALINKS_VERSION', '1.0.0' );
 function activate_cs_custom_permalinks() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-cs-custom-permalinks-activator.php';
 	Cs_Custom_Permalinks_Activator::activate();
+	flush_rewrite_rules();
 }
 
 /**

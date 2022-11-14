@@ -112,6 +112,11 @@ class Cs_Custom_Permalinks {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cs-custom-permalinks-i18n.php';
 
 		/**
+		 * This files use for common functions of the plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/cs-core-functions.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-cs-custom-permalinks-admin.php';
@@ -154,8 +159,8 @@ class Cs_Custom_Permalinks {
 
 		$plugin_admin = new Cs_Custom_Permalinks_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'cscp_enqueue_styles_scripts' );
+		
 
 	}
 
@@ -170,9 +175,12 @@ class Cs_Custom_Permalinks {
 
 		$plugin_public = new Cs_Custom_Permalinks_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'cscp_enqueue_styles_scripts' );
+		$this->loader->add_action( 'init', $plugin_public, 'cscp_init_functions' );
+		$this->loader->add_filter( 'post_link', $plugin_public, 'cscp_change_structure_permalink', 99, 2 );
+		$this->loader->add_filter( 'post_type_link', $plugin_public, 'cscp_change_structure_permalink', 99, 2 );
+		
+		
 	}
 
 	/**
