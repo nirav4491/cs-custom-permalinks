@@ -86,4 +86,8 @@ class Cs_Custom_Permalinks_Public {
 		return $permalink;
 		
 	}
+	public function cscp_make_redirects_callback() {
+		
+		
+    }
 }
