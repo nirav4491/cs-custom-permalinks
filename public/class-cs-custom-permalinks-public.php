@@ -69,10 +69,13 @@ class Cs_Custom_Permalinks_Public {
 	 * @since 1.0.0
 	 */
 	public function cscp_init_functions() {
+		global $wp_rewrite;
 		cscp_custom_song_post_type();
-		// global $wp_rewrite;
-		// $wp_rewrite->add_permastruct('song', '/%customname%/', false);
-		// $wp_rewrite->flush_rules();
+		// $new_slug = '/' . $post_id . '/niravmehta/' . $post->post_name;
+		// $wp_rewrite->add_permastruct('song', '/song/%customname%/', false);
+		// $wp_rewrite->flush_rules();	
+		
+		
 	}
 	/**
 	 * Function to return change permalink structure.
