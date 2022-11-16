@@ -70,13 +70,15 @@ class Cs_Custom_Permalinks_Public {
 	 */
 	public function cscp_init_functions() {
 		cscp_custom_song_post_type();
-		global $wp_rewrite;
-		$wp_rewrite->add_permastruct('song', '/%customname%/', false);
-		$wp_rewrite->flush_rules();
+		// global $wp_rewrite;
+		// $wp_rewrite->add_permastruct('song', '/%customname%/', false);
+		// $wp_rewrite->flush_rules();
 	}
 	/**
 	 * Function to return change permalink structure.
 	 *
+	 * @param String $permalink This variable holds the permalink value.
+	 * @param Object $post This variable holds post object.
 	 * @since 1.0.0
 	 */
 	public function cscp_change_structure_permalink( $permalink, $post ) {
@@ -86,7 +88,15 @@ class Cs_Custom_Permalinks_Public {
 		return $permalink;
 		
 	}
+	/**
+	 * Function to return adddin parse requests
+	 *
+	 * @param Array $query This variable holds the query array.
+	 * @since 1.0.0
+	 */
 	public function cscp_generate_request( $query ) {
+		debug( $query );
+		die;
 		global $wpdb;
 		$requested_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING );
 		if ( ! empty( $requested_url ) ) {
