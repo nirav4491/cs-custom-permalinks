@@ -86,8 +86,28 @@ class Cs_Custom_Permalinks_Public {
 		return $permalink;
 		
 	}
-	public function cscp_make_redirects_callback() {
-		
-		
-    }
+	public function cscp_generate_request( $query ) {
+		global $wpdb;
+		$requested_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING );
+		if ( ! empty( $requested_url ) ) {
+			$original_url = null;
+			$url     = wp_parse_url( get_bloginfo( 'url' ) );
+			$url     = isset( $url['path'] ) ? $url['path'] : '';
+			$request = ltrim( substr( $requested_url, strlen( $url ) ), '/' );
+			$pos     = strpos( $request, '?' );
+			if ( $pos ) {
+				$request = substr( $request, 0, $pos );
+			}
+			if ( ! $request ) {
+				return $query;
+			}
+			$slug_exploded = explode( '/', $request );
+			$slug_array    = array_filter( $slug_exploded );
+			$slug          = end( $slug_array );
+			$post_data     = $wpdb->get_results( $wpdb->prepare( 'SELECT `ID` FROM '. $wpdb->posts . ' WHERE `post_name`=%s', $slug  ), ARRAY_A );
+			debug( $post_data );
+			die;
+		}
+	}
+	
 }

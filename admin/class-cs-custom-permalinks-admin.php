@@ -63,4 +63,11 @@ class Cs_Custom_Permalinks_Admin {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cs-custom-permalinks-admin.css', array(), $this->version, 'all' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cs-custom-permalinks-admin.js', array( 'jquery' ), $this->version, false );
 	}
+
+	public function cscp_save_posts( $post_id, $post ) {
+		if ( 'song' === $post->post_type ) {
+			$post_new_slug = 'niravmehta/' . $post->post_name;
+			update_post_meta( $post_id, 'update_post_slug', $post_new_slug );
+		}
+	}
 }

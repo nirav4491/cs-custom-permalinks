@@ -160,8 +160,7 @@ class Cs_Custom_Permalinks {
 		$plugin_admin = new Cs_Custom_Permalinks_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'cscp_enqueue_styles_scripts' );
-		
-
+		$this->loader->add_action( 'save_post', $plugin_admin, 'cscp_save_posts', 99, 2 );
 	}
 
 	/**
@@ -177,8 +176,11 @@ class Cs_Custom_Permalinks {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'cscp_enqueue_styles_scripts' );
 		$this->loader->add_action( 'init', $plugin_public, 'cscp_init_functions' );
+		// $this->loader->add_filter( 'request', $plugin_public, 'cscp_generate_request' );
 		$this->loader->add_filter( 'post_link', $plugin_public, 'cscp_change_structure_permalink', 99, 2 );
 		$this->loader->add_filter( 'post_type_link', $plugin_public, 'cscp_change_structure_permalink', 99, 2 );
+		
+		
 		// $this->loader->add_action( 'template_redirect', $plugin_public, 'cscp_make_redirects_callback' );
 		
 	}
