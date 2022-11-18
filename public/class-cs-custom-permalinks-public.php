@@ -69,13 +69,15 @@ class Cs_Custom_Permalinks_Public {
 	 * @since 1.0.0
 	 */
 	public function cscp_init_functions() {
-		global $wp_rewrite;
 		cscp_custom_song_post_type();
-		$new_slug = '/' . $post_id . '/niravmehta/' . $post->post_name;
-		$wp_rewrite->add_permastruct('song', '/song/%customname%/', false);
-		$wp_rewrite->flush_rules();	
-		
-		
+		// $post_type = apply_filters('cscp_post_type_args', 'song');
+		// $args = array(
+		// 	'post_type' => $post_type,
+		// 	'posts_per_page' => -1,
+		// );
+		// $post_results = new WP_Query( $args );
+		// $posts_data   = $post_results->posts;
+		cscp_rewrite_rules_arguments( 'song' );
 	}
 	/**
 	 * Function to return change permalink structure.
@@ -86,36 +88,9 @@ class Cs_Custom_Permalinks_Public {
 	 */
 	public function cscp_change_structure_permalink( $permalink, $post ) {
 		if ( 'song' === $post->post_type ) {
-			$permalink = str_replace( '%customname%/', 'niravmehta/'. $post->post_name, $permalink );
+			$post_id   = $post->ID;
+			$permalink = str_replace( '/song/' , '/'.$post_id.'/niravmehta/' , $permalink );
 		}
 		return $permalink;
 	}
-	/**
-	 * Function to return adddin parse requests
-	 *
-	 * @param Array $query This variable holds the query array.
-	 * @since 1.0.0
-	 */
-	public function cscp_generate_request( $query ) {
-		global $wpdb;
-		$requested_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING );
-		if ( ! empty( $requested_url ) ) {
-			$original_url = null;
-			$url     = wp_parse_url( get_bloginfo( 'url' ) );
-			$url     = isset( $url['path'] ) ? $url['path'] : '';
-			$request = ltrim( substr( $requested_url, strlen( $url ) ), '/' );
-			$pos     = strpos( $request, '?' );
-			if ( $pos ) {
-				$request = substr( $request, 0, $pos );
-			}
-			if ( ! $request ) {
-				return $query;
-			}
-			$slug_exploded = explode( '/', $request );
-			$slug_array    = array_filter( $slug_exploded );
-			$slug          = end( $slug_array );
-			$post_data     = $wpdb->get_results( $wpdb->prepare( 'SELECT `ID` FROM '. $wpdb->posts . ' WHERE `post_name`=%s', $slug  ), ARRAY_A );
-		}
-	}
-	
 }

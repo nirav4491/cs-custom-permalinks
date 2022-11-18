@@ -73,7 +73,29 @@ if ( ! function_exists( 'cscp_custom_song_post_type' ) ) {
             'publicly_queryable'    => true,
             'capability_type'       => 'page',
             'show_in_rest'          => true,
+            
         );
         register_post_type( 'song', $args );
     }
+}
+/**
+ * Check function exists or not.
+ */
+if ( ! empty( 'cscp_rewrite_rules_arguments' ) ) {
+    /**
+     * Function to add rewrite rules.
+     *
+     * @param String $post_type This vvariable holds the value of post type.
+     * @since 1.0.0
+     */
+    function cscp_rewrite_rules_arguments( $post_type ) {
+        $rewrite_rules_args = add_rewrite_rule(
+			'^(.*)/(.*)/?$',
+			'index.php?post_type='. $post_type .'&name=$matches[2]',
+			'top'
+		);
+        $rewrite_rules = apply_filters('cscp_channge_rewrite_rules', $rewrite_rules_args );
+        return $rewrite_rules;
+    }
+    
 }
