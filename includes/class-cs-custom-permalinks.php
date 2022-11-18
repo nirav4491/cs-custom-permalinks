@@ -160,7 +160,9 @@ class Cs_Custom_Permalinks {
 		$plugin_admin = new Cs_Custom_Permalinks_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'cscp_enqueue_styles_scripts' );
-		$this->loader->add_action( 'save_post', $plugin_admin, 'cscp_save_posts', 99, 2 );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'cscp_add_admin_setting_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'cscp_admin_init_callback' );
+		
 	}
 
 	/**

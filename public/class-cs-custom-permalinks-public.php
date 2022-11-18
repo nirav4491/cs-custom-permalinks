@@ -70,13 +70,6 @@ class Cs_Custom_Permalinks_Public {
 	 */
 	public function cscp_init_functions() {
 		cscp_custom_song_post_type();
-		// $post_type = apply_filters('cscp_post_type_args', 'song');
-		// $args = array(
-		// 	'post_type' => $post_type,
-		// 	'posts_per_page' => -1,
-		// );
-		// $post_results = new WP_Query( $args );
-		// $posts_data   = $post_results->posts;
 		cscp_rewrite_rules_arguments( 'song' );
 	}
 	/**
