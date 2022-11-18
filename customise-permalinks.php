@@ -89,6 +89,7 @@ function cstmlinks_run_cs_custom_permalinks() {
 function cstmlinks_plugins_loaded_callback() {
 	cstmlinks_run_cs_custom_permalinks();
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'cstmlinks_plugin_action_links_callback' );
+	// sample comment.
 }
 
 add_action( 'plugins_loaded', 'cstmlinks_plugins_loaded_callback' );
