@@ -71,9 +71,9 @@ class Cs_Custom_Permalinks_Public {
 	public function cscp_init_functions() {
 		global $wp_rewrite;
 		cscp_custom_song_post_type();
-		// $new_slug = '/' . $post_id . '/niravmehta/' . $post->post_name;
-		// $wp_rewrite->add_permastruct('song', '/song/%customname%/', false);
-		// $wp_rewrite->flush_rules();	
+		$new_slug = '/' . $post_id . '/niravmehta/' . $post->post_name;
+		$wp_rewrite->add_permastruct('song', '/song/%customname%/', false);
+		$wp_rewrite->flush_rules();	
 		
 		
 	}
@@ -89,7 +89,6 @@ class Cs_Custom_Permalinks_Public {
 			$permalink = str_replace( '%customname%/', 'niravmehta/'. $post->post_name, $permalink );
 		}
 		return $permalink;
-		
 	}
 	/**
 	 * Function to return adddin parse requests
@@ -98,8 +97,6 @@ class Cs_Custom_Permalinks_Public {
 	 * @since 1.0.0
 	 */
 	public function cscp_generate_request( $query ) {
-		debug( $query );
-		die;
 		global $wpdb;
 		$requested_url = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING );
 		if ( ! empty( $requested_url ) ) {
@@ -118,8 +115,6 @@ class Cs_Custom_Permalinks_Public {
 			$slug_array    = array_filter( $slug_exploded );
 			$slug          = end( $slug_array );
 			$post_data     = $wpdb->get_results( $wpdb->prepare( 'SELECT `ID` FROM '. $wpdb->posts . ' WHERE `post_name`=%s', $slug  ), ARRAY_A );
-			debug( $post_data );
-			die;
 		}
 	}
 	
