@@ -20,7 +20,7 @@
  * @subpackage Cs_Custom_Permalinks/public
  * @author     Nirav Mehta <nirmehta4491@gmail.com>
  */
-class Cs_Custom_Permalinks_Public {
+class Customise_Permalinks_Public {
 
 	/**
 	 * The ID of this plugin.

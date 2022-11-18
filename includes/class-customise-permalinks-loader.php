@@ -1,27 +1,24 @@
 <?php
-
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://https://github.com/nirav4491
+ * @link       https://github.com/nirav4491
  * @since      1.0.0
  *
- * @package    Cs_Custom_Permalinks
- * @subpackage Cs_Custom_Permalinks/includes
+ * @package    Customise_Permalinks
+ * @subpackage Customise_Permalinks/includes
  */
 
 /**
  * Register all actions and filters for the plugin.
  *
- * Maintain a list of all hooks that are registered throughout
- * the plugin, and register them with the WordPress API. Call the
- * run function to execute the list of actions and filters.
+ * Maintain a list of all hooks that are registered throughout the plugin, and register them with the WordPress API. Call the run function to execute the list of actions and filters.
  *
- * @package    Cs_Custom_Permalinks
- * @subpackage Cs_Custom_Permalinks/includes
+ * @package    Customise_Permalinks
+ * @subpackage Customise_Permalinks/includes
  * @author     Nirav Mehta <nirmehta4491@gmail.com>
  */
-class Cs_Custom_Permalinks_Loader {
+class Customise_Permalinks_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -47,10 +44,8 @@ class Cs_Custom_Permalinks_Loader {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-
 		$this->actions = array();
 		$this->filters = array();
-
 	}
 
 	/**
