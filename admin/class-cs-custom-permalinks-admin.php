@@ -100,7 +100,6 @@ class Cs_Custom_Permalinks_Admin {
 	 * Function to return admin setting on setting page.
 	 */
 	public function cscp_admin_init_callback() {
-		
 		add_settings_section(
 			'cscp_page_setting_section',
 			__( 'All post types', 'cs-custom-permalinksn' ),
