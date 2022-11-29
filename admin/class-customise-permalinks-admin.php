@@ -124,6 +124,8 @@ class Customise_Permalinks_Admin {
 		$tab = ( ! is_null( $tab ) ) ? $tab : 'settings';
 		echo wp_kses_post( '<h2 class="nav-tab-wrapper">' );
 
+		$this->plugin_settings_tabs = apply_filters( 'cstmlinks_plugin_settings_tabs', $this->plugin_settings_tabs );
+
 		// Iterate through the tabs.
 		foreach ( $this->plugin_settings_tabs as $tab_key => $tab_caption ) {
 			$active = ( $tab === $tab_key ) ? 'nav-tab-active' : '';
@@ -148,6 +150,8 @@ class Customise_Permalinks_Admin {
 		$this->plugin_settings_tabs['faq'] = __( 'FAQs', 'customise-permalinks' );
 		register_setting( 'faq', 'faq' );
 		add_settings_section( 'tab-faq', ' ', array( &$this, 'cstmlinks_plugin_faq_settings_callback' ), 'faq' );
+
+		do_action( 'cstmlinks_plugin_settings_tab_content' );
 
 		// Redirect to the plugin settings page just as it is activated.
 		if ( get_option( 'cstmlinks_do_plugin_activation_redirect' ) ) {
