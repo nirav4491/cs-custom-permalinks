@@ -123,7 +123,7 @@ class Customise_Permalinks {
 		$plugin_admin = new Customise_Permalinks_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'cstmlinks_admin_enqueue_scripts_callback' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'cstmlinks_add_admin_setting_menu' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'cstmlinks_admin_menu_callback' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'cstmlinks_admin_init_callback' );
 	}
 

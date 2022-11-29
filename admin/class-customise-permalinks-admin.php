@@ -45,8 +45,9 @@ class Customise_Permalinks_Admin {
 	 * @param string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name          = $plugin_name;
+		$this->version              = $version;
+		$this->plugin_settings_tabs = array();
 	}
 
 	/**
@@ -55,29 +56,131 @@ class Customise_Permalinks_Admin {
 	 * @since    1.0.0
 	 */
 	public function cstmlinks_admin_enqueue_scripts_callback() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cs-custom-permalinks-admin.css', array(), $this->version, 'all' );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cs-custom-permalinks-admin.js', array( 'jquery' ), $this->version, false );
+		// Custom admin style.
+		wp_enqueue_style(
+			$this->plugin_name,
+			CSTMLINKS_PLUGIN_URL . 'admin/css/cs-custom-permalinks-admin.css',
+			array(),
+			filemtime( CSTMLINKS_PLUGIN_PATH . 'admin/css/cs-custom-permalinks-admin.css' ),
+			'all'
+		);
+
+		// Custom admin script.
+		wp_enqueue_script(
+			$this->plugin_name,
+			CSTMLINKS_PLUGIN_URL . 'admin/js/cs-custom-permalinks-admin.js',
+			array( 'jquery' ),
+			filemtime( CSTMLINKS_PLUGIN_PATH . 'admin/js/cs-custom-permalinks-admin.js' ),
+			true
+		);
 	}
 	/**
 	 * Function to return add admin setting menu.
 	 *
 	 * @since 1.0.0
 	 */
-	public function cstmlinks_add_admin_setting_menu() {
+	public function cstmlinks_admin_menu_callback() {
+		// Add the settings page.
 		add_options_page(
 			__( 'Customise Pemalinks', 'customise-permalinks' ),
 			__( 'Customise Pemalinks', 'customise-permalinks' ),
 			'manage_options',
 			'customise-permalinks',
-			array( $this, 'cstmlinks_admin_page_contents_callback' )
+			array( $this, 'cstmlinks_admin_settings_callback' )
 		);
 	}
+
+	/**
+	 * Admin settings template.
+	 *
+	 * @since 1.0.0
+	 */
+	public function cstmlinks_admin_settings_callback() {
+		$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );
+		$tab = ( ! is_null( $tab ) ) ? $tab : 'settings';
+		?>
+		<div class="wrap">
+			<div class="cstmlinks-plugin-settings-header">
+				<h1><?php esc_html_e( 'Customise Permalinks', 'customise-permalinks' ); ?></h1>
+				<p><?php esc_html_e( 'This plugin lets you customise your permalinks structure.', 'customise-permalinks' ); ?></p>
+			</div>
+			<div class="hawthorne-plugin-settings-content">
+				<div class="hawthorne-plugin-settings-tabs"><?php $this->cstmlinks_generate_plugin_settings_tabs(); ?></div>
+				<div class="hawthorne-plugin-settings-content">
+					<form action="" method="POST" id="<?php echo esc_attr( $tab ); ?>-settings-form" enctype="multipart/form-data"><?php do_settings_sections( $tab ); ?></form>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Plugin settings tabs.
+	 *
+	 * @version 1.0.0
+	 */
+	public function cstmlinks_generate_plugin_settings_tabs() {
+		$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );
+		$tab = ( ! is_null( $tab ) ) ? $tab : 'settings';
+		echo wp_kses_post( '<h2 class="nav-tab-wrapper">' );
+
+		// Iterate through the tabs.
+		foreach ( $this->plugin_settings_tabs as $tab_key => $tab_caption ) {
+			$active = ( $tab === $tab_key ) ? 'nav-tab-active' : '';
+			echo wp_kses_post( '<a class="nav-tab ' . $active . '" href="?page=customise-permalinks&tab=' . $tab_key . '">' . $tab_caption . '</a>' );
+		}
+
+		echo wp_kses_post( '</h2>' );
+	}
+
+	/**
+	 * Plugin settings tabs and settings templates.
+	 *
+	 * @version 1.0.0
+	 */
+	public function cstmlinks_admin_init_callback() {
+		// General settings.
+		$this->plugin_settings_tabs['settings'] = __( 'Settings', 'customise-permalinks' );
+		register_setting( 'settings', 'settings' );
+		add_settings_section( 'tab-general', ' ', array( &$this, 'cstmlinks_plugin_general_settings_callback' ), 'settings' );
+
+		// FAQ settings.
+		$this->plugin_settings_tabs['faq'] = __( 'FAQs', 'customise-permalinks' );
+		register_setting( 'faq', 'faq' );
+		add_settings_section( 'tab-faq', ' ', array( &$this, 'cstmlinks_plugin_faq_settings_callback' ), 'faq' );
+
+		// Redirect to the plugin settings page just as it is activated.
+		if ( get_option( 'cstmlinks_do_plugin_activation_redirect' ) ) {
+			delete_option( 'cstmlinks_do_plugin_activation_redirect' );
+			wp_safe_redirect( admin_url( '/options-general.php?page=customise-permalinks' ) );
+			exit;
+		}
+	}
+
+	/**
+	 * Plugin general settings template.
+	 *
+	 * @since 1.0.0
+	 */
+	public function cstmlinks_plugin_general_settings_callback() {
+		include_once 'templates/settings/general.php'; // Include the general settings template.
+	}
+
+	/**
+	 * Plugin general settings template.
+	 *
+	 * @since 1.0.0
+	 */
+	public function cstmlinks_plugin_faq_settings_callback() {
+		include_once 'templates/settings/faq.php'; // Include the API connection settings template.
+	}
+
 	/**
 	 * Function to return custom permalink admin setting page content.
 	 *
 	 * @since 1.0.0
 	 */
-	public function cstmlinks_admin_page_contents_callback() {
+	public function cstmlinks_admin_page_contents_callback1() {
 		?>
 		<h1> <?php esc_html_e( 'Welcome to custom permalink admin page.', 'cs-custom-permalinks' ); ?> </h1>
 		<form method="POST" action="options.php">
@@ -92,7 +195,7 @@ class Customise_Permalinks_Admin {
 	/**
 	 * Function to return admin setting on setting page.
 	 */
-	public function cstmlinks_admin_init_callback() {
+	public function cstmlinks_admin_init_callback1() {
 		add_settings_section(
 			'cscp_page_setting_section',
 			__( 'All post types', 'cs-custom-permalinksn' ),

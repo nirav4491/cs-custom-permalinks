@@ -30,7 +30,7 @@ class Customise_Permalinks_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		// Flush the rewrite rules.
-		flush_rewrite_rules();
+		flush_rewrite_rules(); // Flush the rewrite rules.
+		add_option( 'cstmlinks_do_plugin_activation_redirect', 1 ); // Redirect to plugin settings page on the plugin activation.
 	}
 }
